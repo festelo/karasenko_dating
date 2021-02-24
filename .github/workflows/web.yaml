@@ -1,0 +1,32 @@
+name: Web CI/CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build_skia:
+    name: Build Web (Skia)
+    env:
+      my_secret: ${{secrets.commit_secret}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: 1.27.0
+          channel: dev
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: flutter build web --web-renderer canvaskit --release
+      - name: deploy
+        run: |
+          cd build/web
+          git init
+          git config user.name  "CI"
+          git config user.email "flutter-ci@github.com"
+          git remote add secure-origin https://${{ secrets.ACCESS_TOKEN }}@github.com/festelo/karasenko_dating.git
+          git checkout -b gh-pages
+          git add .
+          git commit -m "<3 <3 <3"
+          git push --force secure-origin gh-pages

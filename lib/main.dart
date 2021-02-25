@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,26 +28,193 @@ class HomePage extends StatelessWidget {
             stops: const <double>[0.0, 0.25, 0.5, 0.75, 1.0],
           ),
         ),
-        child: SafeArea(
-          child: SizedBox.expand(
-            child: LayoutBuilder(
-              builder: (ctx, cnstr) => ListView(
-                physics: PageScrollPhysics(),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: SafeArea(
+            child: SizedBox.expand(
+              child: PageView(
+                scrollDirection: Axis.vertical,
                 children: [
-                  SizedBox(
-                    child: FirstView(),
-                    height: cnstr.maxHeight,
-                  ),
-                  SizedBox(
-                    child: SecondView(),
-                    height: cnstr.maxHeight,
-                  ),
+                  LoginView(),
+                  ProgressView(),
+                  FirstView(),
+                  SecondView(),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class LoginView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'НИИ Лев Карасенко',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 50),
+              Card(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    SizedBox(height: 15),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      height: 100,
+                      width: 100,
+                      clipBehavior: Clip.hardEdge,
+                      padding: EdgeInsets.all(1),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Text(
+                      'Илья',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        'Данное приложение поможет вам найти новых знакомых с похожими интересами, основываясь на информации с вашей страницы',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Wrap(
+                        children: [
+                          Text(
+                            'Ваш город - ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'Калининград',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    TextButton(onPressed: () {}, child: Text('Да')),
+                    SizedBox(height: 10),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Fadable(
+                child:
+                    Icon(Icons.arrow_downward, color: Colors.white, size: 42),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+}
+
+class ProgressView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Card(
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  'Идет поиск',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  'Приложение ищет людей среди всех пользователей ВК. Скорее всего, они не будут в курсе, как и где вы их нашли.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  'Поиск может занять какое-то время',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              SizedBox(height: 25),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

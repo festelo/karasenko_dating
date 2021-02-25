@@ -5,8 +5,8 @@ on:
     branches: [master]
 
 jobs:
-  build_deploy:
-    name: Build Web
+  build_skia:
+    name: Build Web (Skia)
     env:
       my_secret: ${{secrets.commit_secret}}
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
           channel: dev
       - run: flutter config --enable-web
       - run: flutter pub get
-      - run: flutter build web --release
+      - run: flutter build web --web-renderer canvaskit --release
       - name: deploy
         run: |
           cd build/web

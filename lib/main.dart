@@ -235,110 +235,119 @@ class _FirstViewState extends State<FirstView>
   }
 
   Widget content() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            Spacer(),
-            Fadable(
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            Spacer(),
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              height: 200,
-              width: 200,
-              clipBehavior: Clip.hardEdge,
-              padding: EdgeInsets.all(1),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Spacer(),
+                Fadable(
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
-              ),
+                Spacer(),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  height: 200,
+                  width: 200,
+                  clipBehavior: Clip.hardEdge,
+                  padding: EdgeInsets.all(1),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Fadable(
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+                Spacer(),
+              ],
             ),
-            Spacer(),
-            Fadable(
-              child: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            Spacer(),
-          ],
-        ),
-        SizedBox(height: 15),
-        Text(
-          'Илья',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
           ),
-        ),
-        SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              height: 50,
-              width: 50,
-              child: IconButton(
-                icon: Text(
-                  '😡',
-                  style: TextStyle(fontSize: 24),
+          SizedBox(height: 15),
+          Column(
+            children: [
+              Text(
+                'Илья',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
-                onPressed: null,
               ),
-            ),
-            SizedBox(width: 15),
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    height: 50,
+                    width: 50,
+                    child: IconButton(
+                      icon: Text(
+                        '😡',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      onPressed: null,
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    height: 50,
+                    width: 50,
+                    child: IconButton(
+                      icon: Text(
+                        '💬',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      onPressed: null,
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    height: 50,
+                    width: 50,
+                    child: IconButton(
+                      icon: Text(
+                        '👀',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      onPressed: null,
+                    ),
+                  ),
+                ],
               ),
-              height: 50,
-              width: 50,
-              child: IconButton(
-                icon: Text(
-                  '💬',
-                  style: TextStyle(fontSize: 24),
-                ),
-                onPressed: null,
-              ),
-            ),
-            SizedBox(width: 15),
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              height: 50,
-              width: 50,
-              child: IconButton(
-                icon: Text(
-                  '👀',
-                  style: TextStyle(fontSize: 24),
-                ),
-                onPressed: null,
-              ),
-            ),
-          ],
-        )
-      ],
+              SizedBox(height: 50),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -346,17 +355,21 @@ class _FirstViewState extends State<FirstView>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 80),
-        Text(
-          'НИИ Лев Карасенко',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-            color: Colors.white,
+        Expanded(
+          child: Align(
+            alignment: Alignment(0, 0.5),
+            child: Text(
+              'Ваши совпадения',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
-        SizedBox(height: 50),
         Expanded(
+          flex: 3,
           child: TabBarView(
             controller: controller,
             children: [

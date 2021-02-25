@@ -219,114 +219,156 @@ class ProgressView extends StatelessWidget {
   }
 }
 
-class FirstView extends StatelessWidget {
+class FirstView extends StatefulWidget {
+  @override
+  _FirstViewState createState() => _FirstViewState();
+}
+
+class _FirstViewState extends State<FirstView>
+    with SingleTickerProviderStateMixin {
+  late TabController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 3, vsync: this);
+  }
+
+  Widget content() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            Spacer(),
+            Fadable(
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+            Spacer(),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              height: 200,
+              width: 200,
+              clipBehavior: Clip.hardEdge,
+              padding: EdgeInsets.all(1),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+                ),
+              ),
+            ),
+            Spacer(),
+            Fadable(
+              child: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+            Spacer(),
+          ],
+        ),
+        SizedBox(height: 15),
+        Text(
+          'Илья',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              height: 50,
+              width: 50,
+              child: IconButton(
+                icon: Text(
+                  '😡',
+                  style: TextStyle(fontSize: 24),
+                ),
+                onPressed: null,
+              ),
+            ),
+            SizedBox(width: 15),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              height: 50,
+              width: 50,
+              child: IconButton(
+                icon: Text(
+                  '💬',
+                  style: TextStyle(fontSize: 24),
+                ),
+                onPressed: null,
+              ),
+            ),
+            SizedBox(width: 15),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              height: 50,
+              width: 50,
+              child: IconButton(
+                icon: Text(
+                  '👀',
+                  style: TextStyle(fontSize: 24),
+                ),
+                onPressed: null,
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: 80),
+        Text(
+          'НИИ Лев Карасенко',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 50),
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: TabBarView(
+            controller: controller,
             children: [
-              Text(
-                'НИИ Лев Карасенко',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 50),
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                height: 200,
-                width: 200,
-                clipBehavior: Clip.hardEdge,
-                padding: EdgeInsets.all(1),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
-              Text(
-                'Илья',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    height: 50,
-                    width: 50,
-                    child: IconButton(
-                      icon: Text(
-                        '😡',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      onPressed: null,
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    height: 50,
-                    width: 50,
-                    child: IconButton(
-                      icon: Text(
-                        '💬',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      onPressed: null,
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    height: 50,
-                    width: 50,
-                    child: IconButton(
-                      icon: Text(
-                        '👀',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      onPressed: null,
-                    ),
-                  ),
-                ],
-              )
+              content(),
+              content(),
+              content(),
             ],
           ),
         ),
         Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Fadable(
-                child:
-                    Icon(Icons.arrow_downward, color: Colors.white, size: 42),
-              ),
-            ],
+          child: Fadable(
+            child: Icon(Icons.arrow_downward, color: Colors.white, size: 42),
           ),
         ),
         SizedBox(height: 20),

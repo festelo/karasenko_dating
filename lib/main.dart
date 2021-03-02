@@ -32,14 +32,18 @@ class HomePage extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: SafeArea(
             child: SizedBox.expand(
-              child: PageView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  LoginView(),
-                  ProgressView(),
-                  FirstView(),
-                  SecondView(),
-                ],
+              child: LayoutBuilder(
+                builder: (ctx, cnstr) => ListView(
+                  scrollDirection: Axis.vertical,
+                  physics: PageScrollPhysics(),
+                  itemExtent: cnstr.maxHeight,
+                  children: [
+                    LoginView(),
+                    ProgressView(),
+                    FirstView(),
+                    SecondView(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -343,7 +347,80 @@ class _FirstViewState extends State<FirstView>
                   ),
                 ],
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 40),
+              SizedBox(
+                height: 40,
+                width: 30 * 4 + 10,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        height: 40,
+                        width: 40,
+                        padding: EdgeInsets.all(1),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(pikabuAva),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 30,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        height: 40,
+                        width: 40,
+                        padding: EdgeInsets.all(1),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(habrAva),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 60,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        height: 40,
+                        width: 40,
+                        padding: EdgeInsets.all(1),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(kaliningradAva),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 90,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        height: 40,
+                        width: 40,
+                        padding: EdgeInsets.all(1),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '+5',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ],
@@ -389,6 +466,15 @@ class _FirstViewState extends State<FirstView>
     );
   }
 }
+
+const pikabuAva =
+    'https://sun9-3.userapi.com/c630017/v630017880/1271c/1OvQJ6Gew98.jpg?ava=1';
+
+const habrAva =
+    'https://sun1-84.userapi.com/s/v1/ig1/xiDx2spXM3Ax-SxOfKB1JOUg2WW0Mu8vJESd-5HHNT5JD1H7YoN0P8gX2GfuaTJF_0WH6SCy.jpg?size=200x0&quality=96&crop=0,0,567,567&ava=1';
+
+const kaliningradAva =
+    'https://sun1-88.userapi.com/s/v1/if1/33eIzx3D5Pd0inXw-Lcx20gbmOWfTAptG9cp47aVfyYhtYivtQPgMZ-4zXjA58J8TYZHZjPz.jpg?size=200x0&quality=96&crop=0,0,500,500&ava=1';
 
 class SecondView extends StatelessWidget {
   Widget card(String imageUrl, String name) {
@@ -464,17 +550,17 @@ class SecondView extends StatelessWidget {
         ),
         SizedBox(height: 20),
         card(
-          'https://sun9-3.userapi.com/c630017/v630017880/1271c/1OvQJ6Gew98.jpg?ava=1',
+          pikabuAva,
           'Пикабу',
         ),
         SizedBox(height: 14),
         card(
-          'https://sun1-84.userapi.com/s/v1/ig1/xiDx2spXM3Ax-SxOfKB1JOUg2WW0Mu8vJESd-5HHNT5JD1H7YoN0P8gX2GfuaTJF_0WH6SCy.jpg?size=200x0&quality=96&crop=0,0,567,567&ava=1',
+          habrAva,
           'Хабр',
         ),
         SizedBox(height: 14),
         card(
-          'https://sun1-88.userapi.com/s/v1/if1/33eIzx3D5Pd0inXw-Lcx20gbmOWfTAptG9cp47aVfyYhtYivtQPgMZ-4zXjA58J8TYZHZjPz.jpg?size=200x0&quality=96&crop=0,0,500,500&ava=1',
+          kaliningradAva,
           'Калининград Онлайн',
         ),
       ],

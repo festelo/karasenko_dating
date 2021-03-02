@@ -8,7 +8,18 @@ void main() {
   ));
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool loggedIn = false;
+
+  void setLoggedIn() {
+    setState(() => loggedIn = true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +43,20 @@ class HomePage extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: SafeArea(
             child: SizedBox.expand(
-              child: LayoutBuilder(
-                builder: (ctx, cnstr) => ListView(
-                  scrollDirection: Axis.vertical,
-                  physics: PageScrollPhysics(),
-                  itemExtent: cnstr.maxHeight,
-                  children: [
-                    LoginView(),
+              child: PageView(
+                scrollDirection: Axis.vertical,
+                physics: PageScrollPhysics(),
+                allowImplicitScrolling: false,
+                children: [
+                  LoginView(
+                    setLoggedIn: setLoggedIn,
+                  ),
+                  if (loggedIn) ...[
                     ProgressView(),
                     FirstView(),
                     SecondView(),
                   ],
-                ),
+                ],
               ),
             ),
           ),
@@ -53,7 +66,373 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
+  final VoidCallback setLoggedIn;
+
+  const LoginView({Key? key, required this.setLoggedIn}) : super(key: key);
+
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  bool next = false;
+  void login() {
+    widget.setLoggedIn();
+    setState(() => next = true);
+  }
+
+  Widget cityView() {
+    return Column(
+      children: [
+        SizedBox(height: 15),
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          height: 100,
+          width: 100,
+          clipBehavior: Clip.hardEdge,
+          padding: EdgeInsets.all(1),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(
+              'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+            ),
+          ),
+        ),
+        SizedBox(height: 15),
+        Text(
+          'Илья',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'Данное приложение поможет вам найти новых знакомых с похожими интересами, основываясь на информации с вашей страницы',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Wrap(
+            children: [
+              Text(
+                'Ваш город - ',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                'Калининград',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                '?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 15),
+        TextButton(
+          onPressed: () => setState(() => cityId = 'test'),
+          child: Text('Да'),
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+
+  bool maleSelected = false;
+  bool femaleSelected = true;
+  bool childSelected = true;
+
+  Widget sexView() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          SizedBox(height: 15),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            height: 100,
+            width: 100,
+            clipBehavior: Clip.hardEdge,
+            padding: EdgeInsets.all(1),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Илья',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Wrap(
+              children: [
+                Text(
+                  'Кого вы ищите?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () => setState(() => femaleSelected = !femaleSelected),
+                child: Container(
+                  width: 40,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 35,
+                        child: Text(
+                          '👩',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: femaleSelected ? Colors.blue : Colors.grey,
+                        ),
+                        height: 4,
+                        width: 4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => maleSelected = !maleSelected),
+                child: Container(
+                  width: 40,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 35,
+                        child: Text(
+                          '👨',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: maleSelected ? Colors.blue : Colors.grey,
+                        ),
+                        height: 4,
+                        width: 4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => setState(() => childSelected = !childSelected),
+                child: Container(
+                  width: 40,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 35,
+                        child: Text(
+                          '👶',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: childSelected ? Colors.blue : Colors.grey,
+                        ),
+                        height: 4,
+                        width: 4,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          TextButton(
+            onPressed: femaleSelected || maleSelected || childSelected
+                ? () {
+                    login();
+                    setState(() {
+                      sexSelected = true;
+                    });
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text('Дальше'),
+            ),
+          ),
+          SizedBox(height: 2),
+          SizedBox(
+            height: 16,
+            child: TextButton(
+              onPressed: () => setState(() => cityId = null),
+              child: Text('Назад'),
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.resolveWith((states) => Colors.grey),
+                textStyle: MaterialStateProperty.resolveWith(
+                    (states) => TextStyle(fontSize: 12)),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  Widget finishView() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          SizedBox(height: 15),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            height: 100,
+            width: 100,
+            clipBehavior: Clip.hardEdge,
+            padding: EdgeInsets.all(1),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Илья',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              children: [
+                Text(
+                  'Настройка закончена',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 12),
+                Wrap(
+                  children: [
+                    Text(
+                      'Город - ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      'Калининград',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                Wrap(
+                  children: [
+                    Text(
+                      'Цели - 👶👶👶',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Для продолжения\nпролестните страницу вниз',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 15),
+          SizedBox(
+            height: 16,
+            child: TextButton(
+              onPressed: () => setState(() => sexSelected = false),
+              child: Text('Назад'),
+              style: ButtonStyle(
+                foregroundColor:
+                    MaterialStateProperty.resolveWith((states) => Colors.grey),
+                textStyle: MaterialStateProperty.resolveWith(
+                    (states) => TextStyle(fontSize: 12)),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  String? cityId;
+  bool sexSelected = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,79 +453,11 @@ class LoginView extends StatelessWidget {
               SizedBox(height: 50),
               Card(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    SizedBox(height: 15),
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      height: 100,
-                      width: 100,
-                      clipBehavior: Clip.hardEdge,
-                      padding: EdgeInsets.all(1),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      'Илья',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        'Данное приложение поможет вам найти новых знакомых с похожими интересами, основываясь на информации с вашей страницы',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Wrap(
-                        children: [
-                          Text(
-                            'Ваш город - ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            'Калининград',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            '?',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    TextButton(onPressed: () {}, child: Text('Да')),
-                    SizedBox(height: 10),
-                  ],
-                ),
+                child: () {
+                  if (cityId == null) return cityView();
+                  if (!sexSelected) return sexView();
+                  return finishView();
+                }(),
               ),
               SizedBox(height: 30),
             ],
@@ -157,8 +468,22 @@ class LoginView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Fadable(
-                child:
-                    Icon(Icons.arrow_downward, color: Colors.white, size: 42),
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 600),
+                  child: next
+                      ? Icon(
+                          Icons.arrow_downward,
+                          key: ValueKey('nextIcon'),
+                          color: Colors.white,
+                          size: 42,
+                        )
+                      : Icon(
+                          Icons.person_outline_rounded,
+                          key: ValueKey('waitIcon'),
+                          color: Colors.white,
+                          size: 42,
+                        ),
+                ),
               ),
             ],
           ),

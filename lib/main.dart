@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
+import 'package:karasenko/physics.dart';
 import 'package:karasenko/progress/page.dart';
 import 'package:karasenko/setup/page.dart';
 
@@ -56,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             child: SizedBox.expand(
               child: PageView(
                 scrollDirection: Axis.vertical,
-                physics: PageScrollPhysics(),
+                physics: CustomPageViewScrollPhysics(),
                 allowImplicitScrolling: false,
                 children: [
                   SetupPage(
@@ -335,6 +338,7 @@ class _FirstViewState extends State<FirstView>
           flex: 4,
           child: TabBarView(
             controller: controller,
+            physics: CustomPageViewScrollPhysics(),
             children: [
               content(),
               content(),

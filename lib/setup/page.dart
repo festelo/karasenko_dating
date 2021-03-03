@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karasenko/fadable.dart';
+import 'package:karasenko/physics.dart';
 import 'package:karasenko/setup/city.dart';
 import 'package:karasenko/setup/details.dart';
 import 'package:karasenko/setup/summary.dart';
@@ -60,7 +61,7 @@ class _SetupPageState extends State<SetupPage> {
               ),
               SizedBox(height: 50),
               SizedBox(
-                height: 320,
+                height: 325,
                 child: Card(
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: settedUp
@@ -73,6 +74,7 @@ class _SetupPageState extends State<SetupPage> {
                         )
                       : PageView(
                           controller: controller,
+                          physics: CustomPageViewScrollPhysics(),
                           onPageChanged: (page) {
                             if (page == 2) {
                               finish();

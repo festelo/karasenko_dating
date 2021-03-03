@@ -294,6 +294,30 @@ class _FirstViewState extends State<FirstView>
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: 10),
+        SizedBox(
+          height: 60,
+          child: Fadable(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned(
+                  top: 0,
+                  child: Icon(Icons.keyboard_arrow_up,
+                      color: Colors.white, size: 38),
+                ),
+                Positioned(
+                  top: 24,
+                  child: Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         Expanded(
           child: Align(
             alignment: Alignment(0, 0.5),
@@ -308,7 +332,7 @@ class _FirstViewState extends State<FirstView>
           ),
         ),
         Expanded(
-          flex: 3,
+          flex: 4,
           child: TabBarView(
             controller: controller,
             children: [

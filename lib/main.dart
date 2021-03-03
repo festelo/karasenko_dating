@@ -1,6 +1,11 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:karasenko/progress/page.dart';
+import 'package:karasenko/setup/page.dart';
+
+import 'fadable.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,10 +19,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool loggedIn = false;
+  bool setupCompleted = false;
+  bool searching = true;
 
   void setLoggedIn() {
-    setState(() => loggedIn = true);
+    setState(() => setupCompleted = true);
+    Timer(Duration(seconds: 4), () => setSearching(false));
+  }
+
+  void setSearching(bool val) {
+    setState(() => searching = val);
   }
 
   @override
@@ -48,13 +59,21 @@ class _HomePageState extends State<HomePage> {
                 physics: PageScrollPhysics(),
                 allowImplicitScrolling: false,
                 children: [
-                  LoginView(
-                    setLoggedIn: setLoggedIn,
+                  SetupPage(
+                    finish: () {
+                      setSearching(true);
+                      setLoggedIn();
+                    },
+                    setupCompleted: setupCompleted,
+                    resetSetup: () => setState(() => setupCompleted = false),
                   ),
-                  if (loggedIn) ...[
-                    ProgressView(),
-                    FirstView(),
-                    SecondView(),
+                  if (setupCompleted) ...[
+                    if (searching)
+                      ProgressPage()
+                    else ...[
+                      FirstView(),
+                      SecondView(),
+                    ]
                   ],
                 ],
               ),
@@ -62,488 +81,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class LoginView extends StatefulWidget {
-  final VoidCallback setLoggedIn;
-
-  const LoginView({Key? key, required this.setLoggedIn}) : super(key: key);
-
-  @override
-  _LoginViewState createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
-  bool next = false;
-  void login() {
-    widget.setLoggedIn();
-    setState(() => next = true);
-  }
-
-  Widget cityView() {
-    return Column(
-      children: [
-        SizedBox(height: 15),
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-          ),
-          height: 100,
-          width: 100,
-          clipBehavior: Clip.hardEdge,
-          padding: EdgeInsets.all(1),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
-            ),
-          ),
-        ),
-        SizedBox(height: 15),
-        Text(
-          'Илья',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            'Данное приложение поможет вам найти новых знакомых с похожими интересами, основываясь на информации с вашей страницы',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-        ),
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Wrap(
-            children: [
-              Text(
-                'Ваш город - ',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                'Калининград',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                '?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 15),
-        TextButton(
-          onPressed: () => setState(() => cityId = 'test'),
-          child: Text('Да'),
-        ),
-        SizedBox(height: 10),
-      ],
-    );
-  }
-
-  bool maleSelected = false;
-  bool femaleSelected = true;
-  bool childSelected = true;
-
-  Widget sexView() {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: [
-          SizedBox(height: 15),
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            height: 100,
-            width: 100,
-            clipBehavior: Clip.hardEdge,
-            padding: EdgeInsets.all(1),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
-              ),
-            ),
-          ),
-          SizedBox(height: 15),
-          Text(
-            'Илья',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Wrap(
-              children: [
-                Text(
-                  'Кого вы ищите?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => setState(() => femaleSelected = !femaleSelected),
-                child: Container(
-                  width: 40,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 35,
-                        child: Text(
-                          '👩',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: femaleSelected ? Colors.blue : Colors.grey,
-                        ),
-                        height: 4,
-                        width: 4,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () => setState(() => maleSelected = !maleSelected),
-                child: Container(
-                  width: 40,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 35,
-                        child: Text(
-                          '👨',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: maleSelected ? Colors.blue : Colors.grey,
-                        ),
-                        height: 4,
-                        width: 4,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () => setState(() => childSelected = !childSelected),
-                child: Container(
-                  width: 40,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 35,
-                        child: Text(
-                          '👶',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: childSelected ? Colors.blue : Colors.grey,
-                        ),
-                        height: 4,
-                        width: 4,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
-          TextButton(
-            onPressed: femaleSelected || maleSelected || childSelected
-                ? () {
-                    login();
-                    setState(() {
-                      sexSelected = true;
-                    });
-                  }
-                : null,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Дальше'),
-            ),
-          ),
-          SizedBox(height: 2),
-          SizedBox(
-            height: 16,
-            child: TextButton(
-              onPressed: () => setState(() => cityId = null),
-              child: Text('Назад'),
-              style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateProperty.resolveWith((states) => Colors.grey),
-                textStyle: MaterialStateProperty.resolveWith(
-                    (states) => TextStyle(fontSize: 12)),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-        ],
-      ),
-    );
-  }
-
-  Widget finishView() {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: [
-          SizedBox(height: 15),
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            height: 100,
-            width: 100,
-            clipBehavior: Clip.hardEdge,
-            padding: EdgeInsets.all(1),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://sun1-92.userapi.com/s/v1/ig2/KRg6lLY3i0IErDeYe9dCfcP-nqT5jmNAw3CZMoW8KKRI7aQV-GQAbbC8YfVFEY_mtHlzWBj2eHfc8qOCTxU9j2d1.jpg?size=200x0&quality=96&crop=374,612,382,382&ava=1',
-              ),
-            ),
-          ),
-          SizedBox(height: 15),
-          Text(
-            'Илья',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              children: [
-                Text(
-                  'Настройка закончена',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 12),
-                Wrap(
-                  children: [
-                    Text(
-                      'Город - ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      'Калининград',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                Wrap(
-                  children: [
-                    Text(
-                      'Цели - 👶👶👶',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'Для продолжения\nпролестните страницу вниз',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 15),
-          SizedBox(
-            height: 16,
-            child: TextButton(
-              onPressed: () => setState(() => sexSelected = false),
-              child: Text('Назад'),
-              style: ButtonStyle(
-                foregroundColor:
-                    MaterialStateProperty.resolveWith((states) => Colors.grey),
-                textStyle: MaterialStateProperty.resolveWith(
-                    (states) => TextStyle(fontSize: 12)),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-        ],
-      ),
-    );
-  }
-
-  String? cityId;
-  bool sexSelected = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'НИИ Лев Карасенко',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 50),
-              Card(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: () {
-                  if (cityId == null) return cityView();
-                  if (!sexSelected) return sexView();
-                  return finishView();
-                }(),
-              ),
-              SizedBox(height: 30),
-            ],
-          ),
-        ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Fadable(
-                child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 600),
-                  child: next
-                      ? Icon(
-                          Icons.arrow_downward,
-                          key: ValueKey('nextIcon'),
-                          color: Colors.white,
-                          size: 42,
-                        )
-                      : Icon(
-                          Icons.person_outline_rounded,
-                          key: ValueKey('waitIcon'),
-                          color: Colors.white,
-                          size: 42,
-                        ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
-  }
-}
-
-class ProgressView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Card(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  'Идет поиск',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  'Приложение ищет людей среди всех пользователей ВК. Скорее всего, они не будут в курсе, как и где вы их нашли.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  'Поиск может занять какое-то время',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(height: 25),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
@@ -889,43 +426,6 @@ class SecondView extends StatelessWidget {
           'Калининград Онлайн',
         ),
       ],
-    );
-  }
-}
-
-class Fadable extends StatefulWidget {
-  final Widget child;
-
-  const Fadable({Key? key, required this.child}) : super(key: key);
-
-  @override
-  _FadableState createState() => _FadableState();
-}
-
-class _FadableState extends State<Fadable> with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 1600),
-      lowerBound: 0.6,
-    )..repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: controller,
-      child: widget.child,
     );
   }
 }

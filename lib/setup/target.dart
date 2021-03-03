@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karasenko/main.dart';
 
 enum Sex { male, female, child }
 
@@ -91,7 +92,10 @@ class SetupTarget extends StatelessWidget {
                         height: 35,
                         child: Text(
                           sex.emoji(),
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontFamily: emojiFamily,
+                          ),
                         ),
                       ),
                       Container(

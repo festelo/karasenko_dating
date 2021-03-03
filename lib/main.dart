@@ -88,6 +88,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+const emojiFamily = 'NotoColorEmoji';
+
 class FirstView extends StatefulWidget {
   @override
   _FirstViewState createState() => _FirstViewState();
@@ -173,7 +175,10 @@ class _FirstViewState extends State<FirstView>
                     child: IconButton(
                       icon: Text(
                         '😡',
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: emojiFamily,
+                        ),
                       ),
                       onPressed: null,
                     ),
@@ -189,7 +194,10 @@ class _FirstViewState extends State<FirstView>
                     child: IconButton(
                       icon: Text(
                         '💬',
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: emojiFamily,
+                        ),
                       ),
                       onPressed: null,
                     ),
@@ -205,7 +213,10 @@ class _FirstViewState extends State<FirstView>
                     child: IconButton(
                       icon: Text(
                         '👀',
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: emojiFamily,
+                        ),
                       ),
                       onPressed: null,
                     ),

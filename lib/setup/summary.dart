@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karasenko/main.dart';
 
 import 'target.dart';
 
@@ -72,12 +73,18 @@ class SetupSummary extends StatelessWidget {
               Wrap(
                 children: [
                   Text(
-                    'Цели - ${selectedTargets.map((e) => e.emoji()).join()}',
+                    'Цели - ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
+                  Text(
+                    selectedTargets.map((e) => e.emoji()).join(),
+                    style: TextStyle(
+                      fontFamily: emojiFamily,
+                    ),
+                  )
                 ],
               ),
               SizedBox(height: 12),

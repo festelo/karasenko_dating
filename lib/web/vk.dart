@@ -1,23 +1,49 @@
 @JS()
 library vk;
 
+import 'dart:html';
+
 import 'package:js/js.dart';
 import 'vk.types.dart';
 
 @JS('vkBridge')
-external VkBridge bridge;
+external _VkBridgeInterop bridgeProd;
+
+@JS('vkBridgeMock')
+external _VkBridgeInterop bridgeMock;
+
+@JS()
+class _VkBridgeInterop {
+  @JS('send')
+  external Object send(String call, Map<String, dynamic> params);
+}
+
+class VkBridgeWeb implements VkBridge {
+  _VkBridgeInterop interop;
+  VkBridgeWeb(this.interop);
+
+  @override
+  Future send(String call, Map<String, dynamic> params) {
+    return promiseToFutureAsMap(interop.send(call, params));
+  }
+}
 
 class Vk {
-  static Future<void> init() async {
+  VkBridge bridge;
+
+  Vk({bool mocked = false})
+      : bridge = mocked ? VkBridgeWeb(bridgeMock) : VkBridgeWeb(bridgeProd);
+
+  Future<void> init() async {
     await bridge.send('VKWebAppInit', {});
   }
 
-  static Future<String> email() async {
-    final data = await bridge.send('VKWebAppGetEmail', {});
-    return data['email'];
+  Future<String> email() async {
+    final res = await bridge.send('VKWebAppGetEmail', {});
+    return res['email'];
   }
 
-  static Future<String> token({
+  Future<String> token({
     required String appId,
     required Set<VkAuthScope> scope,
   }) async {
@@ -25,14 +51,13 @@ class Vk {
       "app_id": 6909581,
       "scope": scope.map((e) => e.name).join(','),
     });
-    final type = res['type'];
-    if (type == 'VKWebAppGetAuthTokenFailed') {
+    if (res['error_type'] != null) {
       throw VkAuthTokenException(
-        type: res['data']['error_type'],
-        data: res['data']['error_data'],
+        type: res['error_type'],
+        data: res['error_data'],
         source: res,
       );
     }
-    return res['data']['access_token'];
+    return res['access_token'];
   }
 }

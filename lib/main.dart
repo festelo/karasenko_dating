@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:karasenko/physics.dart';
 import 'package:karasenko/progress/page.dart';
 import 'package:karasenko/setup/page.dart';
@@ -11,22 +13,50 @@ import 'package:karasenko/web/vk.types.dart';
 import 'fadable.dart';
 
 void main() async {
-  await Vk.init();
-  final email = await Vk.email();
-  final token = await Vk.token(appId: '7779751', scope: {
-    VkAuthScope.groups,
-  });
   runApp(MaterialApp(
-    home: Center(
-      child: Column(
+    home: Test(),
+  ));
+}
+
+class Test extends StatefulWidget {
+  @override
+  _TestState createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  String? email;
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    initStateAsync();
+  }
+
+  Future<void> initStateAsync() async {
+    final config = await rootBundle.loadStructuredData(
+        'config.json', (value) async => jsonDecode(value));
+    final vk = Vk(mocked: config['mock-vk'] ?? false);
+    await vk.init();
+    email = await vk.email();
+    token = await vk.token(appId: '7779751', scope: {
+      VkAuthScope.groups,
+    });
+    if (mounted) setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SelectableText(email),
-          SelectableText(token),
+          SelectableText(email ?? '...'),
+          SelectableText(token ?? '...'),
         ],
       ),
-    ),
-  ));
+    );
+  }
 }
 
 class HomePage extends StatefulWidget {

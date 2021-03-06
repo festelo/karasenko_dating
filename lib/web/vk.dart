@@ -4,6 +4,7 @@ library vk;
 import 'dart:html';
 
 import 'package:js/js.dart';
+import 'package:js/js_util.dart';
 import 'vk.types.dart';
 
 @JS('vkBridge')
@@ -15,7 +16,7 @@ external _VkBridgeInterop bridgeMock;
 @JS()
 class _VkBridgeInterop {
   @JS('send')
-  external Object send(String call, Map<String, dynamic> params);
+  external dynamic send(String call, Object params);
 }
 
 class VkBridgeWeb implements VkBridge {
@@ -24,7 +25,24 @@ class VkBridgeWeb implements VkBridge {
 
   @override
   Future send(String call, Map<String, dynamic> params) {
-    return promiseToFutureAsMap(interop.send(call, params));
+    final jsParams = mapToJsObject(params);
+    return promiseToFutureAsMap(
+        interop.send(call, jsParams).then((e) => e, (e) {
+      print(e);
+      return e;
+    }));
+  }
+
+  Object mapToJsObject(Map map) {
+    var object = newObject();
+    map.forEach((k, v) {
+      if (v is Map) {
+        setProperty(object, k, mapToJsObject(v));
+      } else {
+        setProperty(object, k, v);
+      }
+    });
+    return object;
   }
 }
 

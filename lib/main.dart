@@ -35,17 +35,21 @@ class _TestState extends State<Test> {
 
   Future<void> initStateAsync() async {
     bool useMock = false;
+    print('kek');
     try {
       final config = await rootBundle.loadStructuredData(
           'config.json', (value) async => jsonDecode(value));
       useMock = config['mock-vk'];
     } catch (_) {}
     final vk = Vk(mocked: useMock);
+    print('ykek');
     await vk.init();
     email = await vk.email();
+    print('okek');
     token = await vk.token(appId: '7779751', scope: {
       VkAuthScope.groups,
     });
+    print('berkek');
     if (mounted) setState(() {});
   }
 

@@ -1,18 +1,31 @@
 import 'dart:async';
 import 'dart:ui';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:karasenko/physics.dart';
 import 'package:karasenko/progress/page.dart';
 import 'package:karasenko/setup/page.dart';
+import 'package:karasenko/web/vk.dart';
+import 'package:karasenko/web/vk.types.dart';
 
 import 'fadable.dart';
 
-void main() {
+void main() async {
+  await Vk.init();
+  final email = await Vk.email();
+  final token = await Vk.token(appId: '7779751', scope: {
+    VkAuthScope.groups,
+  });
   runApp(MaterialApp(
-    home: HomePage(),
+    home: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SelectableText(email),
+          SelectableText(token),
+        ],
+      ),
+    ),
   ));
 }
 

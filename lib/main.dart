@@ -34,9 +34,13 @@ class _TestState extends State<Test> {
   }
 
   Future<void> initStateAsync() async {
-    final config = await rootBundle.loadStructuredData(
-        'config.json', (value) async => jsonDecode(value));
-    final vk = Vk(mocked: config['mock-vk'] ?? false);
+    bool useMock = false;
+    try {
+      final config = await rootBundle.loadStructuredData(
+          'config.json', (value) async => jsonDecode(value));
+      useMock = config['mock-vk'];
+    } catch (_) {}
+    final vk = Vk(mocked: useMock);
     await vk.init();
     email = await vk.email();
     token = await vk.token(appId: '7779751', scope: {

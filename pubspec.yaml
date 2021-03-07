@@ -13,7 +13,10 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.0
-  js: ^0.6.3
+  vk_bridge:
+    git:
+      url: git@github.com:festelo/vk_bridge.git
+      ref: nnbd
 
 dev_dependencies:
   flutter_test:

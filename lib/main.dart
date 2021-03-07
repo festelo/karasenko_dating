@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:karasenko/physics.dart';
 import 'package:karasenko/progress/page.dart';
 import 'package:karasenko/setup/page.dart';
-import 'package:karasenko/web/vk.dart';
-import 'package:karasenko/web/vk.types.dart';
+import 'package:vk_bridge/vk_bridge.dart';
 
 import 'fadable.dart';
 
@@ -34,22 +31,12 @@ class _TestState extends State<Test> {
   }
 
   Future<void> initStateAsync() async {
-    bool useMock = false;
-    print('kek');
-    try {
-      final config = await rootBundle.loadStructuredData(
-          'config.json', (value) async => jsonDecode(value));
-      useMock = config['mock-vk'];
-    } catch (_) {}
-    final vk = Vk(mocked: useMock);
-    print('ykek');
-    await vk.init();
-    email = await vk.email();
-    print('okek');
-    token = await vk.token(appId: '7779751', scope: {
-      VkAuthScope.groups,
-    });
-    print('berkek');
+    await VKBridge.instance.init();
+    final emailData = await VKBridge.instance.getEmail();
+    email = emailData.email;
+    final authData =
+        await VKBridge.instance.getAuthToken(appId: 7779751, scope: 'groups');
+    token = authData.accessToken;
     if (mounted) setState(() {});
   }
 

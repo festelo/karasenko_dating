@@ -16,7 +16,7 @@ dependencies:
   vk_bridge:
     git:
       url: https://github.com/festelo/vk_bridge.git
-      ref: nnbd
+      ref: main
 
 dev_dependencies:
   flutter_test:

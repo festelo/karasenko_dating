@@ -190,7 +190,7 @@ packages:
       path: "."
       ref: nnbd
       resolved-ref: f5c2a412112e0ea734ce1e9fc4fb98c02d18adc4
-      url: "git@github.com:festelo/vk_bridge.git"
+      url: "https://github.com/festelo/vk_bridge.git"
     source: git
     version: "1.2.6"
 sdks:

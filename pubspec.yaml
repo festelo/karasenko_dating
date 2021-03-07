@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   vk_bridge:
     git:
-      url: git@github.com:festelo/vk_bridge.git
+      url: https://github.com/festelo/vk_bridge.git
       ref: nnbd
 
 dev_dependencies:
